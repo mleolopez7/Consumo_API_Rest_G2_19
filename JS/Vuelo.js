@@ -6,6 +6,18 @@ var UrlApiDelete = 'http://localhost:5002/vuelo/eliminar/:codigo_vuelo';
 
 $(document).ready(function(){
     CargarVuelos();
+
+    // Evento para el botón "Editar"
+    $(document).on('click', '.btn-editar', function () {
+        var codigo_vuelo = $(this).data('codigo');
+        CargarVuelo(codigo_vuelo);
+    });
+
+    // Evento para el botón "Eliminar"
+    $(document).on('click', '.btn-eliminar', function () {
+        var codigo_vuelo = $(this).data('codigo');
+        EliminarVuelo(codigo_vuelo);
+    });
 })
 
 function CargarVuelos(){
@@ -26,12 +38,12 @@ function CargarVuelos(){
             '<td>'+ MiItems[i].cantidad_pasajeros +'</td>'+
             '<td>'+ MiItems[i].tipo_avion +'</td>'+
             '<td>'+ MiItems[i].distancia_km +'</td>'+
-            '<td> '+
-            '<button id="btneditar" class="btn btn-primary" onclick="CargarVuelo('+ MiItems[i].codigo_vuelo +')">Editar</button>'+
-            '</td>'+
-            '<td>'+
-            '<button id="btneliminar" class="btn btn-danger" onclick="EliminarVuelo('+ MiItems[i].codigo_vuelo +')">Eliminar</button>'+
-            '</td>'+
+            '<td> ' +
+            '<button class="btn btn-primary btn-editar" data-codigo="' + MiItems[i].codigo_vuelo + '">Editar</button>' +
+            '</td>' +
+            '<td> ' +
+            '<button class="btn btn-danger btn-eliminar" data-codigo="' + MiItems[i].codigo_vuelo + '">Eliminar</button>' +
+            '</td>' +
             '</tr>';
             $('#DataVuelos').html(Valores);
         }
@@ -54,7 +66,7 @@ function AgregarVuelo(){
     //alert(datosvuelojson)
 
     $.ajax({
-        url : UrlApiInsert,
+        url:UrlApiInsert,
         type: 'POST',
         data : datosvuelojson,
         datatype: 'JSON',
@@ -80,7 +92,7 @@ function CargarVuelo(p_codigo_vuelo){
     var datosvuelojson = JSON.stringify(datosvuelo);
 
     $.ajax({
-        url : UrlApiGetUno,
+        url:UrlApiGetUno,
         type: 'POST',
         data : datosvuelojson,
         datatype: 'JSON',
@@ -96,45 +108,17 @@ function CargarVuelo(p_codigo_vuelo){
                 $('#TIPOAVI').val(MiItems[i].tipo_avion);
                 $('#DISTANCIA').val(MiItems[i].distancia_km);
                 var btnactualizar = '<input type="submit" class="btn btn-primary" ' +
-                'id="btnagregar" onclick="ActualizarVuelo('+ MiItems[i].codigo_vuelo +')" value="Actualizar Vuelo">';
+                'id="btnagregar" onclick="ActualizarVuelo('+ MiItems[i].codigo_vuelo +')" value="Actualizar Vuelo" >';
                 $('#btnagregarvuelo').html(btnactualizar);
             }
         }
     });
 }
 
-function ActualizarVuelo(p_codigo_vuelo){
-
-    var datosvueloactu = {
-        codigo_vuelo :$('#CODIGOVUE').val(),
-        ciudad_origen :$('#CIUDADORI').val(),
-        ciudad_destino :$('#CIUDADDES').val(),
-        fecha_vuelo :$('#FECHAVUE').val(),
-        cantidad_pasajeros :$('#CANTIDADPAS').val(),
-        tipo_avion :$('#TIPOAVI').val(),
-        distancia_km :$('#DISTANCIA').val()
-    };
-
-    var datosvueloactujson = JSON.stringify(datosvueloactu);
-    //alert(datosvuelojson)
-
-    $.ajax({
-        url : UrlApiUpdate,
-        type: 'PUT',
-        data : datosvueloactujson,
-        datatype: 'JSON',
-        contentType : 'application/json',
-        success : function(respuesta){
-            //console.log(respuesta)
-            alert('Vuelo actualizado de forma correcta');
-            $('#Miformulario').submit();
-        },
-        error : function(textError, errorThrown){
-            alert('Error: '+ textError + errorThrown);
-        }
-    });
-    alert('Aviso');
+function ActualizarVuelo(p_codigo_vuelo) {
+    
 }
+
 
 function EliminarVuelo(p_codigo_vuelo){
 

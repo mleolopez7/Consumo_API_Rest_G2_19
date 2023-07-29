@@ -16,7 +16,7 @@
     <!-- Barra de navegación-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">G2_19</a>
+          <a class="navbar-brand" href="/Home.html">G2_19</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -43,8 +43,9 @@
         </div>
       </nav>
 
-      <!-- FORMULARIO VUELO-->
     <div class="container">
+      <!-- CARGAR VUELOS-->
+        <hr>
         <div class="consulta mt6">
             <div class="row">
                 <div class="col-6">
@@ -67,16 +68,49 @@
                                 <th>Distancia</th>
                             </tr>
                         </thead>
-                        <tbody id="DataVuelo">
+                        <tbody id="DataVuelos">
                             
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+        <!-- FORMULARIO VUELO-->
+        <div class="formulario mt6">
+          <div class="row">
+            <div class="col-12">
+              <h3>
+                Agregar Vuelo
+              </h3>
+            </div>
+          </div>
+          <div class="col-12">
+            <form id="Miformulario" class="Vuelo">
+              <label for="">Codigo Vuelo</label>
+              <input type="text" id="CODIGOVUE" class="form-control" placeholder="Ingrese el codigo de Vuelo">
+              <label for="">Ciudad Origen</label>
+              <input type="text" id="CIUDADORI" class="form-control" placeholder="Ingrese la ciudad origen">
+              <label for="">Ciudad Destino</label>
+              <input type="text" id="CIUDADDES" class="form-control" placeholder="Ingrese la ciudad destino">
+              <label for="">Fecha Vuelo</label>
+              <input type="datetime" id="FECHAVUE" class="form-control" placeholder="Ingrese la fecha de vuelo">
+              <label for="">Cantidad Pasajeros</label>
+              <input type="text" id="CANTIDADPAS" class="form-control" placeholder="Ingrese la cantiad de pasajeros">
+              <label for="">Tipo Avion</label>
+              <input type="text" id="TIPOAVI" class="form-control" placeholder="Ingrese el tipo de avion">
+              <label for="">Distancia</label>
+              <input type="text" id="DISTANCIA" class="form-control" placeholder="Ingrese la distancia en KM">
+              <hr>
+              <div id="btnagregarvuelo">
+                <input type="submit" value="Agregar Vuelo" class="btn btn-success" id="btnagregar" onclick="AgregarVuelo()">
+              </div>
+              <hr>
+            </form>
+          </div>
+        </div>
     </div>
     
-
+    <!-- JAVASCRIPT -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>

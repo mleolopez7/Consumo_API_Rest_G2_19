@@ -15,8 +15,8 @@ $(document).ready(function(){
 
     // Evento para el botón "Actualizar"
     $(document).on('click', '.btn-actualizar', function () {
-        var codigoVuelo = $(this).data('codigo');
-        ActualizarVuelo(codigoVuelo);
+        var codigo_vuelo = $(this).data('codigo');
+        ActualizarVuelo(codigo_vuelo);
     });
 
     // Evento para el botón "Eliminar"
@@ -24,8 +24,6 @@ $(document).ready(function(){
         var codigo_vuelo = $(this).data('codigo');
         EliminarVuelo(codigo_vuelo);
     });
-
-    
 })
 
 function CargarVuelos(){
@@ -128,7 +126,7 @@ function CargarVuelo(p_codigo_vuelo){
 function ActualizarVuelo(p_codigo_vuelo){
 
     var datosvuelo={
-        codigo_vuelo :$('#CODIGOVUE').val(),
+        codigo_vuelo :p_codigo_vuelo,
         ciudad_origen :$('#CIUDADORI').val(),
         ciudad_destino :$('#CIUDADDES').val(),
         fecha_vuelo :$('#FECHAVUE').val(),
@@ -140,19 +138,20 @@ function ActualizarVuelo(p_codigo_vuelo){
     var datosvuelojson =JSON.stringify(datosvuelo);
     alert(datosvuelojson)
 
+
     $.ajax({
-        url: urlApiUpdate,
+        url: UrlApiUpdate,
         type: 'PUT',
         data: datosvuelojson,
         datatype: 'JSON',
         contentType: 'application/json',
         success : function(response){
-            console.log(response);
+            //console.log(response);
             alert('Vuelo Actualizado Correctamente');
             $('#Miformulario').submit();
         },
         error : function(textError, errorThrown){
-            console.log('Error:', textError, errorThrown);
+            //console.log('Error:', textError, errorThrown);
             alert('Error: ' + textError + ' ' + errorThrown);
         }
     });

@@ -13,11 +13,19 @@ $(document).ready(function(){
         CargarVuelo(codigo_vuelo);
     });
 
+    // Evento para el botón "Actualizar"
+    $(document).on('click', '.btn-actualizar', function () {
+        var codigoVuelo = $(this).data('codigo');
+        ActualizarVuelo(codigoVuelo);
+    });
+
     // Evento para el botón "Eliminar"
     $(document).on('click', '.btn-eliminar', function () {
         var codigo_vuelo = $(this).data('codigo');
         EliminarVuelo(codigo_vuelo);
     });
+
+    
 })
 
 function CargarVuelos(){
@@ -107,16 +115,48 @@ function CargarVuelo(p_codigo_vuelo){
                 $('#CANTIDADPAS').val(MiItems[i].cantidad_pasajeros);
                 $('#TIPOAVI').val(MiItems[i].tipo_avion);
                 $('#DISTANCIA').val(MiItems[i].distancia_km);
-                var btnactualizar = '<input type="submit" class="btn btn-primary" ' +
-                'id="btnagregar" onclick="ActualizarVuelo('+ MiItems[i].codigo_vuelo +')" value="Actualizar Vuelo" >';
+                //var btnactualizar = '<input type="submit" class="btn btn-primary" ' +
+                //'id="btnagregar" onclick="ActualizarVuelo('+ MiItems[i].codigo_vuelo +')" value="Actualizar Vuelo" >';
+                var btnactualizar = '<button type="button" class="btn btn-primary btn-actualizar" ' +
+                'data-codigo="' + MiItems[i].codigo_vuelo + '">Actualizar Vuelo</button>';
                 $('#btnagregarvuelo').html(btnactualizar);
             }
         }
     });
 }
 
-function ActualizarVuelo(p_codigo_vuelo) {
-    
+function ActualizarVuelo(p_codigo_vuelo){
+
+    var datosvuelo={
+        codigo_vuelo :$('#CODIGOVUE').val(),
+        ciudad_origen :$('#CIUDADORI').val(),
+        ciudad_destino :$('#CIUDADDES').val(),
+        fecha_vuelo :$('#FECHAVUE').val(),
+        cantidad_pasajeros :$('#CANTIDADPAS').val(),
+        tipo_avion :$('#TIPOAVI').val(),
+        distancia_km :$('#DISTANCIA').val()
+    };
+
+    var datosvuelojson =JSON.stringify(datosvuelo);
+    alert(datosvuelojson)
+
+    $.ajax({
+        url: urlApiUpdate,
+        type: 'PUT',
+        data: datosvuelojson,
+        datatype: 'JSON',
+        contentType: 'application/json',
+        success : function(response){
+            console.log(response);
+            alert('Vuelo Actualizado Correctamente');
+            $('#Miformulario').submit();
+        },
+        error : function(textError, errorThrown){
+            console.log('Error:', textError, errorThrown);
+            alert('Error: ' + textError + ' ' + errorThrown);
+        }
+    });
+    alert('Aviso');
 }
 
 
@@ -140,7 +180,7 @@ function EliminarVuelo(p_codigo_vuelo){
             $('#Miformulario').submit();
         },
         error : function(textError, errorThrown){
-            alert('Error: '+ textError + errorThrown);
+            alert('Error: ' + textError + ' ' + errorThrown);
         }
     });
     alert('Aviso');

@@ -1,41 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatoble" content="IE-edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avion</title>
-    <!-- CSS Only-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Aviones</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="/JS/Avion.js"></script>
-</head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="file:///C:/Users/Michelle/Desktop/consumo_g2_19/Consumo_API_Rest_G2_19/JS/Avion.js"></script>
+  </head>
 
-<body>
-    <!-- Barra de navegación-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+  <body>
+
+ <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand" href="/Home.html">G2_19</a>
+          <a class="navbar-brand" href="file:///C:/Users/Michelle/Desktop/consumo_g2_19/Consumo_API_Rest_G2_19/Home.html">G2_19</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/Home.html">Home</a>
+                <a class="nav-link active" aria-current="page" href="file:///C:/Users/Michelle/Desktop/consumo_g2_19/Consumo_API_Rest_G2_19/Home.html">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/Informacion.html">Información</a>
+                <a class="nav-link" href="file:///C:/Users/Michelle/Desktop/consumo_g2_19/Consumo_API_Rest_G2_19/Informacion.html">Información</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Formularios
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item" href="/Vuelo.html">Vuelo</a></li>
-                  <li><a class="dropdown-item" href="/Avion.html">Avion</a></li>
-                  <li><a class="dropdown-item" href="/Pasajeros.html">Pasajeros</a></li>
+                  <li><a class="dropdown-item" href="file:///C:/Users/Michelle/Desktop/consumo_g2_19/Consumo_API_Rest_G2_19/Vuelo.html">Vuelo</a></li>
+                  <li><a class="dropdown-item" href="file:///C:/Users/Michelle/Desktop/consumo_g2_19/Consumo_API_Rest_G2_19/Avion.html">Avion</a></li>
+                  <li><a class="dropdown-item" href="file:///C:/Users/Michelle/Desktop/consumo_g2_19/Consumo_API_Rest_G2_19/Pasajeros.html">Pasajeros</a></li>
                 </ul>
               </li>
             </ul>
@@ -43,75 +41,66 @@
         </div>
       </nav>
 
-    <div class="container">
-      <!-- CARGAR AVIONES-->
-        <hr>
-        <div class="consulta mt6">
-            <div class="row">
-                <div class="col-6">
-                    <h3>
-                        Lista de Aviones
-                    </h3>
+ <div class="container mt-4">
+        <h2>Lista de Aviones</h2>
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>numero avion</th>
+                    <th>tipo avion </th>
+                    <th>horas vuelo</th>
+                    <th>capacidad pasajeros</th>
+                    <th>fecha primer vuelo</th>
+                    <th>pais construccion</th>
+                   <th>cantidad vuelos</th>
+                </tr>
+            </thead>
+            <tbody id="DataAviones">
+              
+            </tbody>
+        </table>
+
+        <div class="row">
+            <div class="col-md-6 mt-4">
+                <h3>Agregar Avion</h3>
+                <form id="FormularioAviones">
+                  <div class="mb-3">
+                    <label for="numero_avion" class="form-label">numero avion</label>
+                    <input type="number" class="form-control" id="numero_avion" name="numero_avion">
                 </div>
-            </div>
-            <div class="box-body">
-                <div class="table table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Numero Avion</th>
-                                <th>Tipo Avion</th>
-                                <th>Horas Vuelo</th>
-                                <th>Capacidad Pasajeros</th>
-                                <th>Fecha Primer Vuelo</th>
-                                <th>Pais Construccion</th>
-                                <th>Cantidad Vuelos</th>
-                            </tr>
-                        </thead>
-                        <tbody id="DataAviones">
-                            
-                        </tbody>
-                    </table>
+                <div class="mb-3">
+                    <label for="tipo_avion" class="form-label">tipo avion</label>
+                    <input type="text" class="form-control" id="tipo_avion" name="tipo_avion">
                 </div>
-            </div>
-        </div>
-        <!-- FORMULARIO AVION-->
-        <div class="formulario mt6">
-          <div class="row">
-            <div class="col-12">
-              <h3>
-                Agregar Avion
-              </h3>
-            </div>
-          </div>
-          <div class="col-12">
-            <form id="Miformulario" class="Avion">
-              <label for="">Numero Avion</label>
-              <input type="text" id="NUMEROAVI" class="form-control" placeholder="Ingrese el numero de Avion">
-              <label for="">Tipo Avion</label>
-              <input type="text" id="TIPOAVI" class="form-control" placeholder="Ingrese el tipo de avion">
-              <label for="">Horas Vuelo</label>
-              <input type="text" id="HORASVUE" class="form-control" placeholder="Ingrese las horas de vuelo">
-              <label for="">Capacidad Pasajeros</label>
-              <input type="datetime" id="CAPACIDADPAS" class="form-control" placeholder="Ingrese la capacidad de pasajeros">
-              <label for="">Fecha Primer Vuelo</label>
-              <input type="number" id="FECHAPRIMERVUE" class="form-control" placeholder="Ingrese la fecha de primer vuelo">
-              <label for="">Pais Construccion</label>
-              <input type="text" id="PAISCON" class="form-control" placeholder="Ingrese el pais de construccion">
-              <label for="">Cantidad Vuelos</label>
-              <input type="number" id="CANTIDADVUE" class="form-control" placeholder="Ingrese la cantidad de vuelos">
-              <hr>
-              <div id="btnagregaravion">
-                <input type="submit" value="Agregar Avion" class="btn btn-success" id="btnagregar" onclick="AgregarAvion()">
-              </div>
-              <hr>
-            </form>
-          </div>
-        </div>
-    </div>
-    
-    <!-- JAVASCRIPT -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-</body>
+                <div class="mb-3">
+                    <label for="horas_vuelo" class="form-label">horas vuelo</label>
+                    <input type="number" class="form-control" id="horas_vuelo" name="horas_vuelo">
+                </div>
+                <div class="mb-3">
+                    <label for="capacidad_pasajeros" class="form-label">capacidad pasajeros</label>
+                    <input type="number" class="form-control" id="capacidad_pasajeros" name="capacidad_pasajeros">
+                </div>
+                <div class="mb-3">
+                    <label for="fecha_primer_vuelo" class="form-label">fecha primer vuelo</label>
+                    <input type="date" class="form-control" id="fecha_primer_vuelo" name="fecha_primer_vuelo">
+                </div>
+                <div class="mb-3">
+                    <label for="pais_construccion" class="form-label">pais construccion</label>
+                    <input type="text" class="form-control" id="pais_construccion" name="pais_construcion">
+                </div>
+                <div class="mb-3">
+                    <label for="cantidad_vuelos" class="form-label">cantidad vuelos</label>
+                    <input type="number" class="form-control" id="cantidad_vuelos" name="cantidad_vuelos">
+                </div>
+                <div id="btnAgregarAviones">
+                <button type="button" class="btn btn-primary" onclick="AgregarAvion()" id="btnAgregarAviones">Agregar Avion</button>
+                </div>
+                </form>
+            
+      </div>
+  </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  </body>
 </html>

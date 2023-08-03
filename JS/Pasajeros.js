@@ -1,202 +1,164 @@
-var UrlApiGetAll = 'http://localhost:5002/pasajeros/getAll';
-var UrlApiInsert = 'http://localhost:5002/pasajeros/insert/:codigo_pasajero';
-var UrlApiGetOne = 'http://localhost:5002/pasajeros/getone/:codigo_pasajero';
-var UrlApiUpdate = 'http://localhost:5002/pasajeros/update/:codigo_pasajero';
-var UrlApiDelete = 'http://localhost:5002/pasajeros/eliminar/:codigo_pasajero';
+var UrlApiGetAll = "http://localhost:5002/pasajeros/getall";
+var UrlApiGetUno = "http://localhost:5002/pasajeros/getone/:codigo_pasajero";
+var UrlApiInsert = "http://localhost:5002/pasajeros/insert/:codigo_pasajero";
+var UrlApiActualizar ="http://localhost:5002/pasajero/update/:codigo_pasajero";
+var UrlApiEliminar = "http://localhost:5002/pasajero/delete/:codigo_pasajero";
 
 $(document).ready(function () {
   CargarPasajeros();
-
-  // Evento para el botón 'Editar'
-  $(document).on('click', '.btn-editar', function () {
-    var codigo_pasajero = $(this).data('codigo');
-    CargarPasajeros(codigo_pasajero);
-  });
-
-  // Evento para el botón 'Actualizar'
-  $(document).on('click', '.btn-actualizar', function () {
-    var codigo_pasajero = $(this).data('codigo');
-    ActualizarPasajeros(codigo_pasajero);
-  });
-
-  // Evento para el botón 'Eliminar'
-  $(document).on('click', '.btn-eliminar', function () {
-    var codigo_pasajero = $(this).data('codigo');
-    EliminarPasajeros(codigo_pasajero);
-  });
 });
 
 function CargarPasajeros() {
   $.ajax({
     url: UrlApiGetAll,
-    type: 'GET',
-    datatype: 'JSON',
+    type: "GET",
+    datatype: "JSON",
     success: function (response) {
-      var MiItems = response;
-      var Valores = '';
-      for (i = 0; i < MiItems.length; i++) {
-        Valores +=
+      var MisPasajeros = response;
+      var Pasajeros = "";
+      for (i = 0; i < MisPasajeros.length; i++) {
+        Pasajeros +=
           "<tr>" +
           "<td>" +
-          MiItems[i].codigo_pasajero +
+          MisPasajeros[i].codigo_pasajero +
           "</td>" +
           "<td>" +
-          MiItems[i].nombres +
+          MisPasajeros[i].nombres +
           "</td>" +
           "<td>" +
-          MiItems[i].apellidos +
+          MisPasajeros[i].apellidos +
           "</td>" +
           "<td>" +
-          MiItems[i].fecha_registro +
+          MisPasajeros[i].fecha_registro +
           "</td>" +
           "<td>" +
-          MiItems[i].nacionalidad +
+          MisPasajeros[i].nacionalidad +
           "</td>" +
           "<td>" +
-          MiItems[i].numero_telefono +
+          MisPasajeros[i].numero_telefono +
           "</td>" +
           "<td>" +
-          MiItems[i].email +
+          MisPasajeros[i].email +
           "</td>" +
-          "<td>" +
-          '<button class="btn btn-primary btn-editar" data-codigo="' +
-          MiItems[i].codigo_pasajero +
-          '">Editar</button>' +
-          "</td>" +
-          "<td>" +
-          '<button class="btn btn-danger btn-eliminar" data-codigo="' +
-          MiItems[i].codigo_pasajero +
-          '">Eliminar</button>' +
-          "</td>" +
+          '<td><input type="button" onclick="CargarPasajero(' +
+          MisPasajeros[i].codigo_pasajero +
+          ')" id="btnEditarPasajero" class="btn btn-success" value="Editar"></td>' +
+          '<td><input type="button" onclick="EliminarPasajero(' +
+          MisPasajeros[i].codigo_pasajero +
+          ')" id="btnEliminarPasajero" class="btn btn-danger" value="Eliminar"></td>' +
           "</tr>";
-        $('#DataPasajeros').html(Valores);
+        $("#DataPasajeros").html(Pasajeros);
       }
     },
   });
 }
 
-function AgregarPasajeros() {
-  var datospasajeros = {
-    codigo_pasajero: $('#CODIGO_PASAJERO').val(),
-    nombres: $('#NOMBRES').val(),
-    apellidos: $('#APELLIDOS').val(),
-    fecha_registro: $('#FECHA_REGISTRO').val(),
-    nacionalidad: $('#NACIONALIDAD').val(),
-    numero_telefono: $('#NUMERO_TELEFONO').val(),
-    email: $('#EMAIL').val(),
+function CargarPasajero(P_codigo_pasajero) {
+  var datosPasajero = {
+    codigo_pasajero: P_codigo_pasajero,
   };
-
-  var datospasajerosjson = JSON.stringify(datospasajeros);
-  //alert(datosvuelojson)
-
-  $.ajax({
-    url: UrlApiInsert,
-    type: 'POST',
-    data: datospasajerosjson,
-    datatype: 'JSON',
-    contentType: 'application/json',
-    success: function (respuesta) {
-      //console.log(respuesta)
-      alert('Pasajeros ingresado de forma correcta');
-      $("#Miformulario").submit();
-    },
-    error: function (textError, errorThrown) {
-      alert('Error: ' + textError + errorThrown);
-    },
-  });
-  alert('Aviso');
-}
-
-function CargarPasajeros(p_codigo_pasajero) {
-  var datospasajeros = {
-    codigo_pasajero: p_codigo_pasajero,
-  };
-
-  var datospasajerosjson = JSON.stringify(datospasajeros);
+  var datosPasajeroJson = JSON.stringify(datosPasajero);
 
   $.ajax({
     url: UrlApiGetUno,
-    type: 'POST',
-    data: datospasajerosjson,
-    datatype: 'JSON',
-    contentType: 'application/json',
+    type: "POST",
+    data: datosPasajeroJson,
+    datatype: "JSON",
+    contentType: "application/json",
     success: function (response) {
-      var MiItems = response;
-      for (i = 0; i < MiItems.length; i++) {
-        $('#CODIGO_PASAJERO').val(MyItems[i].codigo_pasajero);
-        $('#NOMBRES').val(MyItems[i].nombres);
-        $('#APELLIDOS').val(MyItems[i].apellidos);
-        $('#FECHA_REGISTRO').val(MyItems[i].fecha_registro);
-        $('#NACIONALIDAD').val(MyItems[i].nacionalidad);
-        $('#NUMERO_TELEFONO').val(MyItems[i].numero_telefono);
-        $('#EMAIL').val(MyItems[i].email);
-        //var btnactualizar = '<input type="submit" class="btn btn-primary" ' +
-        //'id="btnagregar" onclick="ActualizarPasajeros('+ MiItems[i].codigo_pasajero +')" value="Actualizar Pasajeros" >';
-        var btnactualizar =
-          '<button type="button" class="btn btn-primary btn-actualizar" ' +
-          'data-codigo="' +
-          MiItems[i].codigo_pasajero +
-          '">Actualizar Pasajeros</button>';
-        $('#btnagregarpasajeros').html(btnactualizar);
+      var MisPasajeros = response;
+      for (let i = 0; i < MisPasajeros.length; i++) {
+        $("#codigo_pasajero").val(MisPasajeros[i].codigo_pasajero);
+        $("#nombres").val(MisPasajeros[i].nombres);
+        $("#apellidos").val(MisPasajeros[i].apellidos);
+        $("#fecha_registro").val(MisPasajeros[i].fecha_registro);
+        $("#nacionalidad").val(MisPasajeros[i].nacionalidad);
+        $("#numero_telefono").val(MisPasajeros[i].numero_telefono);
+        $("#email").val(MisPasajeros[i].email);
+        var btnActualizar =
+          '<input type="button" onclick="ActualizarPasajero(' +
+          MisPasajeros[i].codigo_pasajero +
+          ')" id="btnActualizarPasajero" class="btn btn-primary" value="Actualizar Pasajero"></input>';
+        $("#btnAgregarPasajeros").html(btnActualizar);
       }
     },
   });
 }
 
-function ActualizarPasajeros(p_codigo_pasajero) {
-  var datospasajero = {
-    codigo_pasajero: pcodigo_pasajero,
-    nombres: $('#NOMBRES').val(),
-    apellidos: $('#APELLIDOS').val(),
-    fecha_registro: $('#FECHA_REGISTRO').val(),
-    nacionalidad: $('#NACIONALIDAD').val(),
-    numero_telefono: $('#NUMERO_TELEFONO').val(),
-    email: $('#EMAIL').val(),
+function AgregarPasajero() {
+  var datosPasajero = {
+    codigo_pasajero: $("#codigo_pasajero").val(),
+    nombres: $("#nombres").val(),
+    apellidos: $("#apellidos").val(),
+    fecha_registro: $("#fecha_registro").val(),
+    nacionalidad: $("#nacionalidad").val(),
+    numero_telefono: $("#numero_telefono").val(),
+    email: $("#email").val(),
   };
 
-  var datospasajerosjson = JSON.stringify(datospasajeros);
-  alert(datospasajerosjson);
+  var datosPasajeroJson = JSON.stringify(datosPasajero);
 
   $.ajax({
-    url: UrlApiUpdate,
-    type: 'PUT',
-    data: datospasajerosjson,
-    datatype: 'JSON',
-    contentType: 'application/json',
+    url: UrlApiInsert,
+    type: "POST",
+    data: datosPasajeroJson,
+    datatype: "JSON",
+    contentType: "application/json",
     success: function (response) {
-      //console.log(response);
-      alert('Pasajeros Actualizado Correctamente');
-      $("#Miformulario").submit();
+      alert("---Pasajero Ingresado Exitosamente---");
+      $("#FormularioPasajeros").submit();
     },
     error: function (textError, errorThrown) {
-      //console.log('Error:', textError, errorThrown);
-      alert("Error: " + textError + " " + errorThrown);
+      alert("Error: " + textError + errorThrown);
     },
   });
-  alert('Aviso');
 }
 
-function EliminarPasajeros(p_codigo_pasajero) {
-  var datospasajeros = {
-    codigo_pasajero: p_codigo_pasajero,
+function ActualizarPasajero() {
+  var datosPasajero = {
+    codigo_pasajero: $("#codigo_pasajero").val(),
+    nombres: $("#nombres").val(),
+    apellidos: $("#apellidos").val(),
+    fecha_registro: $("#fecha_registro").val(),
+    nacionalidad: $("#nacionalidad").val(),
+    numero_telefono: $("#numero_telefono").val(),
+    email: $("#email").val(),
   };
 
-  var datospasajerosjson = JSON.stringify(datospasajeros);
+  var datosPasajeroJson = JSON.stringify(datosPasajero);
 
   $.ajax({
-    url: UrlApiDelete,
-    type: 'DELETE',
-    data: datospasajerosjson,
-    datatype: 'JSON',
-    contentType: 'application/json',
-    success: function (respuesta) {
-      //console.log(respuesta)
-      alert('Vuelo eliminado de forma correcta');
-      $('#Miformulario').submit();
+    url: UrlApiActualizar,
+    type: "PUT",
+    data: datosPasajeroJson,
+    datatype: "JSON",
+    contentType: "application/json",
+    success: function (response) {
+      alert("---Pasajero ha sido Actualizado Exitosamente---");
+      $("#FormularioPasajeros").submit();
     },
     error: function (textError, errorThrown) {
-      alert('Error: ' + textError + '' + errorThrown);
+      alert("Error: " + textError + errorThrown);
     },
   });
-  alert('Aviso');
+}
+
+function EliminarPasajero(P_codigo_pasajero) {
+  var datosPasajero = {
+    codigo_pasajero: P_codigo_pasajero,
+  };
+  var datosPasajeroJson = JSON.stringify(datosPasajero);
+
+  $.ajax({
+    url: UrlApiEliminar,
+    type: "DELETE",
+    data: datosPasajeroJson,
+    datatype: "JSON",
+    contentType: "application/json",
+    success: function (response) {
+      var MisPasajeros = response;
+      alert(response);
+      CargarPasajeros();
+    },
+  });
 }

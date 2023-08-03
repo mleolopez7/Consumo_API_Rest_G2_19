@@ -1,187 +1,164 @@
-var UrlApiGetAll = 'http://localhost:5002/avion/getAll';
-var UrlApiInsert = 'http://localhost:5002/avion/insertar/:numero_avion';
-var UrlApiGetUno = 'http://localhost:5002/avion/getOne/:numero_avion';
-var UrlApiUpdate = 'http://localhost:5002/avion/actualizar/:numero_avion';
-var UrlApiDelete = 'http://localhost:5002/avion/eliminar/:numero_avion';
+var UrlApiGetAllAviones = "http://localhost:5002/avion/getall";
+var UrlApiGetUnoAvion ="http://localhost:5002/avion/getone/:numero_avion";
+var UrlApiInsertAvion = "http://localhost:5002/avion/insertar/:numero_avion";
+var UrlApiActualizarAvion = "http://localhost:5002/avion/actualizar/:numero_avion/";
+var UrlApiEliminarAvion ="http://localhost:5002/avion/eliminar/:numero_avion";
 
-$(document).ready(function(){
-    CargarAviones();
+$(document).ready(function () {
+  CargarAviones();
+});
 
-    // Evento para el botón "Editar"
-    $(document).on('click', '.btn-editar', function () {
-        var numero_avion = $(this).data('codigo');
-        CargarAviones(numero_avion);
-    });
-
-    // Evento para el botón "Actualizar"
-    $(document).on('click', '.btn-actualizar', function () {
-        var numero_avion = $(this).data('codigo');
-        ActualizarAvion(numero_avion);
-    });
-
-    // Evento para el botón "Eliminar"
-    $(document).on('click', '.btn-eliminar', function () {
-        var numero_avion = $(this).data('codigo');
-        EliminarAvion(numero_avion);
-    });
-
-    
-})
-
-function CargarAviones(){
- $.ajax({
-    url:UrlApiGetAll,
-    type: 'GET',
-    datatype: 'JSON',
-    success: function(response){
-        var MiItems = response;
-        var Valores = '';
-        for(i=0; i < MiItems.length; i++){
-            Valores +=
-            '<tr>'+
-            '<td>'+ MiItems[i].numero_avion +'</td>'+
-            '<td>'+ MiItems[i].tipo_avion +'</td>'+
-            '<td>'+ MiItems[i].horas_vuelo +'</td>'+
-            '<td>'+ MiItems[i].capacidad_pasajeros +'</td>'+
-            '<td>'+ MiItems[i].fecha_primer_vuelo +'</td>'+
-            '<td>'+ MiItems[i].pais_construccion +'</td>'+
-            '<td>'+ MiItems[i].cantidad_vuelos +'</td>'+
-            '<td> ' +
-            '<button class="btn btn-primary btn-editar" data-codigo="' + MiItems[i].numero_avion + '">Editar</button>' +
-            '</td>' +
-            '<td> ' +
-            '<button class="btn btn-danger btn-eliminar" data-codigo="' + MiItems[i].numero_avion + '">Eliminar</button>' +
-            '</td>' +
-            '</tr>';
-            $('#DataAviones').html(Valores);
-        }
-    }
- });
+function CargarAviones() {
+  $.ajax({
+    url: UrlApiGetAllAviones,
+    type: "GET",
+    datatype: "JSON",
+    success: function (response) {
+      var MisAviones = response;
+      var Aviones = "";
+      for (i = 0; i < MisAviones.length; i++) {
+        Aviones +=
+          "<tr>" +
+          "<td>" +
+          MisAviones[i].numero_avion +
+          "</td>" +
+          "<td>" +
+          MisAviones[i].tipo_avion +
+          "</td>" +
+          "<td>" +
+          MisAviones[i].horas_vuelo +
+          "</td>" +
+          "<td>" +
+          MisAviones[i].capacidad_pasajeros +
+          "</td>" +
+          "<td>" +
+          MisAviones[i].fecha_primer_vuelo +
+          "</td>" +
+          "<td>" +
+          MisAviones[i].pais_construccion +
+          "</td>" +
+          "<td>" +
+          MisAviones[i].cantidad_vuelos +
+          "</td>" +
+          '<td><input type="button" onclick="CargarAvion(' +
+          MisAviones[i].numero_avion +
+          ')" id="btnEditarAvion" class="btn btn-success" value="Editar"></td>' +
+          '<td><input type="button" onclick="EliminarAvion(' +
+          MisAviones[i].numero_avion +
+          ')" id="btnEliminarAvion" class="btn btn-danger" value="Eliminar"></td>' +
+          "</tr>";
+        $("#DataAviones").html(Aviones);
+      }
+    },
+  });
 }
 
-function AgregarAvion(){
-    var datosavion = {
-        numero_avion :$('#NUMEROAVI').val(),
-        tipo_avion :$('#TIPOAVI').val(),
-        horas_vuelo :$('#HORASVUE').val(),
-        capacidad_pasajeros :$('#CAPACIDADPAS').val(),
-        fecha_primer_vuelo :$('#FECHAPRIMERVUE').val(),
-        pais_construccion :$('#PAISCON').val(),
-        cantidad_vuelos :$('#CANTIDADVUE').val()
-    };
+function CargarAvion(P_numero_avion) {
+  var datosAvion = {
+    numero_avion: P_numero_avion,
+  };
+  var datosAvionJson = JSON.stringify(datosAvion);
 
-    var datosavionjson = JSON.stringify(datosavion);
-    //alert(datosavionjson)
-
-    $.ajax({
-        url:UrlApiInsert,
-        type: 'POST',
-        data : datosavionjson,
-        datatype: 'JSON',
-        contentType : 'application/json',
-        success : function(respuesta){
-            //console.log(respuesta)
-            alert('Avion ingresado de forma correcta');
-            $('#Miformulario').submit();
-        },
-        error : function(textError, errorThrown){
-            alert('Error: '+ textError + errorThrown);
-        }
-    });
-    alert('Aviso');
+  $.ajax({
+    url: UrlApiGetUnoAvion,
+    type: "POST",
+    data: datosAvionJson,
+    datatype: "JSON",
+    contentType: "application/json",
+    success: function (response) {
+      var MisAviones = response;
+      for (let i = 0; i < MisAviones.length; i++) {
+        $("#numero_avion").val(MisAviones[i].numero_avion);
+        $("#tipo_avion").val(MisAviones[i].tipo_avion);
+        $("#horas_vuelo").val(MisAviones[i].horas_vuelo);
+        $("#capacidad_pasajeros").val(MisAviones[i].capacidad_pasajeros);
+        $("#fecha_primer_vuelo").val(MisAviones[i].fecha_primer_vuelo);
+        $("#pais_construccion").val(MisAviones[i].pais_construccion);
+        $("#cantidad_vuelos").val(MisAviones[i].cantidad_vuelos);
+        var btnActualizar =
+          '<input type="button" onclick="ActualizarAvion(' +
+          MisAviones[i].numero_avion +
+          ')" id="btnActualizarAvion" class="btn btn-primary" value="Actualizar Avion"></input>';
+        $("#btnAgregarAviones").html(btnActualizar);
+      }
+    },
+  });
 }
 
-function CargarAvion(p_numero_avion){
+function AgregarAvion() {
+  var datosAvion = {
+    numero_avion: $("#numero_avion").val(),
+    tipo_avion: $("#tipo_avion").val(),
+    horas_vuelo: $("#horas_vuelo").val(),
+    capacidad_pasajeros: $("#capacidad_pasajeros").val(),
+    fecha_primer_vuelo: $("#fecha_primer_vuelo").val(),
+    pais_construccion: $("#pais_construccion").val(),
+    cantidad_vuelos: $("#cantidad_vuelos").val(),
+  };
 
-    var datosavion = {
-        numero_avion : p_numero_avion
-    };
+  var datosAvionJson = JSON.stringify(datosAvion);
 
-    var datosavionjson = JSON.stringify(datosavion);
-
-    $.ajax({
-        url:UrlApiGetUno,
-        type: 'POST',
-        data : datosavionjson,
-        datatype: 'JSON',
-        contentType : 'application/json', 
-        success : function(response){
-            var MiItems = response;
-            for(i=0; i < MiItems.length; i++){
-                $('#NUMEROAVI').val(MiItems[i].numero_avion);
-                $('#TIPOAVI').val(MiItems[i].tipo_avion);
-                $('#HORASVUE').val(MiItems[i].horas_vuelo);
-                $('#CAPACIDADPAS').val(MiItems[i].capacidad_pasajeros);
-                $('#FECHAPRIMERVUE').val(MiItems[i].fecha_primer_vuelo);
-                $('#PAISCON').val(MiItems[i].pais_construccion);
-                $('#CANTIDADVUE').val(MiItems[i].cantidad_vuelos);
-                //var btnactualizar = '<input type="submit" class="btn btn-primary" ' +
-                //'id="btnagregar" onclick="ActualizarAvion('+ MiItems[i].numero_avion +')" value="Actualizar Avion" >';
-                var btnactualizar = '<button type="button" class="btn btn-primary btn-actualizar" ' +
-                'data-codigo="' + MiItems[i].numero_avion + '">Actualizar Avion</button>';
-                $('#btnagregaravion').html(btnactualizar);
-            }
-        }
-    });
+  $.ajax({
+    url: UrlApiInsertAvion,
+    type: "POST",
+    data: datosAvionJson,
+    datatype: "JSON",
+    contentType: "application/json",
+    success: function (response) {
+      alert("---Avion Ingresado Exitosamente---");
+      $("#FormularioAviones").submit();
+    },
+    error: function (textError, errorThrown) {
+      alert("Error: " + textError + errorThrown);
+    },
+  });
 }
 
-function ActualizarAvion(p_numero_avion){
+function ActualizarAvion() {
+  var datosAvion = {
+    numero_avion: $("#numero_avion").val(),
+    tipo_avion: $("#tipo_avion").val(),
+    horas_vuelo: $("#horas_vuelo").val(),
+    capacidad_pasajeros: $("#capacidad_pasajeros").val(),
+    fecha_primer_vuelo: $("#fecha_primer_vuelo").val(),
+    pais_construccion: $("#pais_construccion").val(),
+    cantidad_vuelos: $("#cantidad_vuelos").val(),
+  };
 
-    var datosavion={
-        numero_avion :$('#NUMEROAVI').val(),
-        tipo_avion :$('#TIPOAVI').val(),
-        horas_vuelo :$('#HORASVUE').val(),
-        capacidad_pasajeros :$('#CAPACIDADPAS').val(),
-        fecha_primer_vuelo :$('#FECHAPRIMERVUE').val(),
-        pais_construccion :$('#PAISCON').val(),
-        cantidad_vuelos :$('#CANTIDADVUE').val()
-    };
+  var datosAvionJson = JSON.stringify(datosAvion);
 
-    var datosavionjson =JSON.stringify(datosavion);
-    alert(datosavionjson)
-
-    $.ajax({
-        url: urlApiUpdate,
-        type: 'PUT',
-        data: datosavionjson,
-        datatype: 'JSON',
-        contentType: 'application/json',
-        success : function(response){
-            console.log(response);
-            alert('Avion Actualizado Correctamente');
-            $('#Miformulario').submit();
-        },
-        error : function(textError, errorThrown){
-            console.log('Error:', textError, errorThrown);
-            alert('Error: ' + textError + ' ' + errorThrown);
-        }
-    });
-    alert('Aviso');
+  $.ajax({
+    url: UrlApiActualizarAvion,
+    type: "PUT",
+    data: datosAvionJson,
+    datatype: "JSON",
+    contentType: "application/json",
+    success: function (response) {
+      alert("---Avion ha sido Actualizado Exitosamente---");
+      $("#FormularioAviones").submit();
+    },
+    error: function (textError, errorThrown) {
+      alert("Error: " + textError + errorThrown);
+    },
+  });
 }
 
+function EliminarAvion(P_numero_avion) {
+  var datosAvion = {
+    numero_avion: P_numero_avion,
+  };
+  var datosAvionJson = JSON.stringify(datosAvion);
 
-function EliminarAvion(p_numero_avion){
-
-    var datosavion = {
-        numero_avion : p_numero_avion
-    };
-
-    var datosavionjson = JSON.stringify(datosavion);
-
-    $.ajax({
-        url : UrlApiDelete,
-        type: 'DELETE',
-        data : datosavionjson,
-        datatype: 'JSON',
-        contentType : 'application/json',
-        success : function(respuesta){
-            //console.log(respuesta)
-            alert('Avion eliminado de forma correcta');
-            $('#Miformulario').submit();
-        },
-        error : function(textError, errorThrown){
-            alert('Error: ' + textError + ' ' + errorThrown);
-        }
-    });
-    alert('Aviso');
+  $.ajax({
+    url: UrlApiEliminarAvion,
+    type: "DELETE",
+    data: datosAvionJson,
+    datatype: "JSON",
+    contentType: "application/json",
+    success: function (response) {
+      var MisAviones = response;
+      alert(response);
+      CargarAviones();
+    },
+  });
 }
